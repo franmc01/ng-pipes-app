@@ -5,7 +5,73 @@
 
 <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
   <app-card title="i18nSelectPipe">
-    <p>Saludos {{client().name}} es un placer {{client().gender | i18nSelect:invitationMap}} .</p>
+    <p>
+      Saludos {{ client().name }} es un placer
+      {{ client().gender | i18nSelect : invitationMap }} .
+    </p>
     <button class="btn btn-secondary" (click)="changeClient()">Click me</button>
+  </app-card>
+
+  <app-card title="i18nSelectPipe">
+    <p>Acualmente {{ clients().length | i18nPlural:clientsMap }}</p>
+    <button
+      [disabled]="clients().length === 0"
+      class="btn btn-secondary"
+      (click)="deleteClient()"
+    >
+      Remove client
+    </button>
+  </app-card>
+
+  <app-card title="Slice Pipe">
+    <b>Original</b>
+    <p class="text-primary">{{clients().join(',')}}</p>
+
+    <b class="mt-2">Slice 0:2</b>
+    <p class="text-primary">{{clients() | slice:0:2}}</p>
+
+    <b class="mt-2">Slice 1:2</b>
+    <p class="text-primary">{{clients() | slice:1:2}}</p>
+
+    <b class="mt-2">Slice 0:-3</b>
+    <p class="text-primary">{{clients() | slice:0:-3}}</p>
+  </app-card>
+
+  <app-card title="JsonPipe">
+    <pre class="text-primary">{{clients() | json}}</pre>
+    <br>
+    <pre class="text-primary">{{client() | json}}</pre>
+    <br>
+    <pre class="text-primary text-wrap">{{clients().join(", ")| json | uppercase}}</pre>
+  </app-card>
+
+
+  <app-card title="KeyValuePipe">
+    <pre>{{profile | keyvalue | json}}</pre>
+
+    <ul>
+      @for (item of profile | keyvalue; track $index) {
+        <li>
+          <strong class="text-primary">{{item.key |titlecase}}</strong>
+          <span>
+            {{item.value}}
+          </span>
+        </li>
+      }
+    </ul>
+  </app-card>
+
+  <app-card title="AsyncPipe Promise">
+    <p>{{promiseValue | async}}</p>
+
+    @if (promiseValue |  async; as value) {
+      <p class="text-primary"> {{value}}</p>
+    } @else {
+      <p class="text-secondary">Fetching...</p>
+    }
+  </app-card>
+
+  <app-card title="AsyncPipe Observable">
+    {{myObservableTimer | async}}
   </app-card>
 </section>
